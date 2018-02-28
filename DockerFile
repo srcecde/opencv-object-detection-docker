@@ -1,0 +1,26 @@
+FROM ubuntu:16.04
+RUN apt-get update \  
+    && apt-get install -y protobuf-compiler
+RUN apt-get install python3-pip -y
+RUN apt-get install git -y
+RUN apt-get install libsm6 -y
+RUN apt-get install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev python3-tk ffmpeg x264 libx264-dev libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libgtk-3-dev libatlas-base-dev gfortran  -y
+RUN pip3 install opencv-python
+RUN git clone https://github.com/tensorflow/models.git
+
+WORKDIR models/research
+
+RUN protoc object_detection/protos/*.proto --python_out=.
+
+ENV PYTHONPATH=$PYTHONPATH:$ˋpwdˋ:ˋpwdˋ/slim 
+
+RUN pip3 install lxml
+RUN pip3 install numpy
+RUN pip3 install matplotlib
+RUN pip3 install tensorflow==1.5.0
+RUN pip3 install imutils
+RUN pip3 install pillow
+RUN pip3 install boto3
+# Packaging the object detection codes 
+
+RUN python setup.py install
